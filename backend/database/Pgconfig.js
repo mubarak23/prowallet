@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 const Sequelize = require("sequelize");
-const DbConfig = require("../config/database")[process.env.NODE_ENV];
+const DbConfig = require("../config/config.json")[process.env.NODE_ENV];
 
 const PostgresDb = new Sequelize(
   DbConfig.database,

@@ -1,9 +1,14 @@
-require("dotenv").config();
+// const dotenv = require("dotenv").config();
+const jwt = require("jsonwebtoken");
+
 
 exports.generateToken =  async (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  console.log('we are here at some point')
+  console.log(process.env.JWT_SECRET);
+  const token =  jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
+  return token
 };
 
 

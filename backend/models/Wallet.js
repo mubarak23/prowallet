@@ -3,9 +3,9 @@
 /* eslint-disable no-unused-vars */
 // "use strict";
 const Sequelize = require("sequelize");
-const postgresDb = require("../../database/PostgresDb");
+const postgresDb = require("../database/Pgconfig");
 
-const Wallets = postgresDb.define(
+const Wallet = postgresDb.define(
   "wallets",
   {
     id: {
@@ -39,4 +39,4 @@ const Wallets = postgresDb.define(
   }
 );
 
-module.exports = Wallets;
+module.exports = Wallet;

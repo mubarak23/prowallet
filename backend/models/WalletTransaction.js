@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 // "use strict";
 const Sequelize = require("sequelize");
-const postgresDb = require("../../database/PostgresDb");
+const postgresDb = require("../database/Pgconfig");
 
 const ActivityTransactions = postgresDb.define(
   "activityTransactions",
