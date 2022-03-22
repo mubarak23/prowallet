@@ -5,8 +5,8 @@
 const Sequelize = require("sequelize");
 const postgresDb = require("../database/Pgconfig");
 
-const ActivityTransactions = postgresDb.define(
-  "activityTransactions",
+const WalletTransactions = postgresDb.define(
+  "walletTransactions",
   {
     id: {
       type: Sequelize.UUID,
@@ -18,12 +18,28 @@ const ActivityTransactions = postgresDb.define(
       type: Sequelize.UUID,
       allowNull: false,
     },
-    description: {
+    walletId: {
+      type: Sequelize.UUID,
+      allowNull: false,
+    },
+    amount: {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },
+    type: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    meta: {
-      type: Sequelize.OBJECT,
+
+    reference: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
+    paidAt: { allowNull: false, type: Sequelize.DATE },
+
+    narration: {
+      type: Sequelize.STRING,
       allowNull: true,
     },
   },
@@ -32,4 +48,4 @@ const ActivityTransactions = postgresDb.define(
   }
 );
 
-module.exports = ActivityTransactions;
+module.exports = WalletTransactions;

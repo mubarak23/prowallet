@@ -68,6 +68,42 @@ exports.createUserAccount = async (req, res, next) => {
   });
 };
 
+// @Desc Auth user Login
+// @Route /user/login
+// @Access Public
+exports.userLogin = async (req, res, next) => {
+  return sequelize.transaction(async (t) => {
+    try {
+      const {  email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ message: "Please Include all Field" });
+      }
+      // find if user already exist
+      const userExist = await User.findOne({
+        where: { email: email },
+      });
+      if (userExist && (await bcrypt.compare(password, userExist.hashPassword))) {
+          res.status(200).json({
+            id: userExist.id,
+            name: userExist.name,
+            email: userExist.email,
+            token: await this.generateToken(userExist.id),
+          });
+        } else {
+          return res.status(401).json({ message: "Invalide Credentials" });
+        }
+        
+    } catch (error) {
+      t.rollback();
+      return next(error);
+    }
+  });
+};
+
+
+
+
+// @Desc Generate Auth Token
 exports.generateToken = async (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
