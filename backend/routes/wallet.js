@@ -9,6 +9,9 @@ router.get("/wallet", protected, walletController.userWalletBalance);
 // creditUserWallet
 router.post("/wallet/credit", protected, walletController.creditUserWallet);
 
+// creditUserWallet
+router.post("/wallet/debit", protected, walletController.debitUserWallet);
+
 module.exports = router;
 
 
