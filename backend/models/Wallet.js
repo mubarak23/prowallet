@@ -23,6 +23,11 @@ const Wallets = postgresDb.define(
       allowNull: false,
     },
 
+    currency: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
     isActive: {
       type: Sequelize.BOOLEAN,
       allowNull: false,

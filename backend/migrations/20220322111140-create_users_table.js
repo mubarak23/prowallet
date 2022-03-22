@@ -27,6 +27,10 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        hashPassword: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
         isActive: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
