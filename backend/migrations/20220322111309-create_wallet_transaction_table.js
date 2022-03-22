@@ -34,6 +34,11 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        
+        reference: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
 
         paidAt: { allowNull: false, type: Sequelize.DATE },
 

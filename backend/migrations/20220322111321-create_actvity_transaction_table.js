@@ -27,7 +27,7 @@ module.exports = {
           allowNull: false,
         },
         meta: {
-          type: Sequelize.OBJECT,
+          type: Sequelize.STRING,
           allowNull: true,
         },
 
