@@ -28,7 +28,7 @@ function Register() {
       toast.success('User Registration was successful')
       navigate('/')
     }
-    dispatch(reset())
+    // dispatch(reset())
    },[isSuccess, isError, message, user, dispatch, navigate])
 
     const onChange = (e) => {
