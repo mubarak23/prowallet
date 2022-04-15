@@ -12,6 +12,13 @@ router.post("/wallet/credit", protected, walletController.creditUserWallet);
 // creditUserWallet
 router.post("/wallet/debit", protected, walletController.debitUserWallet);
 
+// WalletTransfer
+router.post("/wallet/transfer", protected, walletController.WalletTransfer);
+
+// WalletTransaction 
+router.post("/wallet/transaction", protected, walletController.WalletTransaction);
+
+
 module.exports = router;
 
 

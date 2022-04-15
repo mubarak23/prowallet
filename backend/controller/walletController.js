@@ -114,7 +114,7 @@ exports.debitUserWallet = async (req, res, next) => {
          { transaction: t }
        );
      // create wallet transaction
-    const creditWalletTransaction = await WalletTransaction.create({
+    const debitWalletTransaction = await WalletTransaction.create({
       userId: usetExist.id,
       walletId: userWallet.id,
       amount: amount,
@@ -127,7 +127,7 @@ exports.debitUserWallet = async (req, res, next) => {
         userId: usetExist.id,
         wallet: userWallet,
         walletBalance: walletbalanceAfter,
-        walletTransaction: creditWalletTransaction,
+        walletTransaction: debitWalletTransaction,
       });
     } catch (error) {
       t.rollback();
@@ -142,10 +142,6 @@ exports.debitUserWallet = async (req, res, next) => {
 exports.WalletTransfer = async (req, res, next) => {
   return sequelize.transaction(async (t) => {
     try {
-      // payload should contain amount, and  walletId,
-      // confirm the login user exist
-      // confirm the login user wallet has the amount he want to transfer to the wallet
-      // confirm the recieving wallet exist,
       const currentUser = req.user;
       const { amount, walletId } = req.body;
 
@@ -172,7 +168,7 @@ exports.WalletTransfer = async (req, res, next) => {
         { walletBalanceMinor: walletbalanceAfter },
         { transaction: t }
       );
-      // handle souece wallet debit transaction - creditWalletTransaction
+      // handle souece wallet debit transaction - debitWalletTransaction
       await WalletTransaction.create({
         userId: currentUser.id,
         walletId: currentUserWallet.id,
@@ -184,8 +180,10 @@ exports.WalletTransfer = async (req, res, next) => {
       });
 
       // handle destination wallet credit
-      const destinationWalletbalanceBefore = destinationWallet.walletBalanceMinor;
-      const destinationWalletbalanceAfter = destinationWalletbalanceBefore + amount;
+      const destinationWalletbalanceBefore =
+        destinationWallet.walletBalanceMinor;
+      const destinationWalletbalanceAfter =
+        destinationWalletbalanceBefore + amount;
       await destinationWallet.update(
         { walletBalanceMinor: destinationWalletbalanceAfter },
         { transaction: t }
@@ -200,6 +198,34 @@ exports.WalletTransfer = async (req, res, next) => {
         paidAt: new Date(),
         narration: "WALLET to WALLET Transfer Transaction",
       });
+      res.status(200).json({
+        userId: currentUser.id,
+        wallet: currentUserWallet,
+        walletBalance: walletbalanceAfter,
+        message: "Wallet to Wallet Transfer was Successful",
+      });
+
+    } catch (error) {
+      t.rollback();
+      return next(error);
+    }
+  });
+};
+
+// @Desc  wallet transaction 
+// @Route /wallet/transaction
+// @Access Protected
+exports.WalletTransaction = async (req, res, next) => {
+  return sequelize.transaction(async (t) => {
+    try {
+      const currentUser = req.user
+      const walletTransactions = await WalletTransaction.find({ where: { userId: currentUser.id }})
+      res.status(200).json({
+        userId: currentUser.id,
+        walletTransactions: walletTransactions,
+        message: "Wallet Transaction Lists",
+      });
+
     } catch (error) {
       t.rollback();
       return next(error);
