@@ -57,6 +57,9 @@ exports.creditUserWallet = async (req, res, next) => {
       if (!userWallet) {
         return res.status(401).json({ message: "Wallet Does not Exist" });
       }
+      if(!userWallet.isActive){
+        return res.status(401).json({ message: "User Wallet Has Been Deactivated" });
+      }
       // credit the wallet and create wallet transaction
       const walletbalanceBefore = userWallet.walletBalanceMinor
       const walletbalanceAfter = walletbalanceBefore + amount
@@ -106,6 +109,12 @@ exports.debitUserWallet = async (req, res, next) => {
       if (!userWallet) {
         return res.status(401).json({ message: "Wallet Does not Exist" });
       }
+      if (!userWallet.isActive) {
+        return res
+          .status(401)
+          .json({ message: "User Wallet Has Been Deactivated" });
+      }
+
       // debit the wallet and create wallet transaction
       const walletbalanceBefore = userWallet.walletBalanceMinor
       const walletbalanceAfter = walletbalanceBefore - amount
@@ -161,6 +170,13 @@ exports.WalletTransfer = async (req, res, next) => {
       if (!destinationWallet) {
         return res.status(401).json({ message: "Wallet Doest not Exist" });
       }
+
+      if(!destinationWallet.isActive && !currentUserWallet.isActive){
+          return res
+            .status(401)
+            .json({ message: "Both Wallet Has Been Deactivated" });
+      }
+
       // handle souece wallet debit
       const walletbalanceBefore = currentUserWallet.walletBalanceMinor;
       const walletbalanceAfter = walletbalanceBefore - amount;
